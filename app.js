@@ -146,9 +146,24 @@ form.addEventListener('submit', async (event) => {
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || 'request_failed');
+    const artwork = artworkInput.files[0];
+    if (artwork && result.upload_token) {
+      const uploadResponse = await fetch(`/api/applications/${result.id}/files`, {
+        method: 'POST',
+        headers: {
+          'content-type': artwork.type || 'application/octet-stream',
+          'x-original-name': encodeURIComponent(artwork.name),
+          'x-upload-token': result.upload_token,
+        },
+        body: artwork,
+      });
+      if (!uploadResponse.ok) throw new Error('file_upload_failed');
+    }
     localStorage.removeItem(storageKey);
     successTitle.textContent = 'Заявка принята';
-    successDetails.textContent = `Номер ${result.public_number}. Файл пока не загружен: на следующем этапе подключим защищённое файловое хранилище.`;
+    successDetails.textContent = artwork
+      ? `Номер ${result.public_number}. Файл загружен и ожидает проверки.`
+      : `Номер ${result.public_number}. Менеджер проверит параметры и свяжется с вами.`;
     form.classList.add('is-hidden');
     success.classList.remove('is-hidden');
     success.scrollIntoView({ behavior: 'smooth', block: 'center' });
