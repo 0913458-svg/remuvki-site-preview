@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Заявки — администрирование</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header><a href="../">← Сайт</a><strong>Заявки ремувок</strong><span id="mode-label">Администрирование</span></header>
+    <main>
+      <section class="login" id="login-panel">
+        <p>Защищённый раздел</p>
+        <h1>Вход для менеджера</h1>
+        <label>Секрет администратора<input type="password" id="admin-token" autocomplete="current-password" /></label>
+        <button id="login-button">Открыть заявки</button>
+        <small>Секрет хранится только в текущей вкладке браузера.</small>
+        <p class="error" id="login-error"></p>
+      </section>
+
+      <section class="workspace is-hidden" id="workspace">
+        <div class="toolbar">
+          <div><p>Входящие</p><h1>Заявки с сайта</h1></div>
+          <label>Статус<select id="status-filter"><option value="">Все статусы</option><option value="submitted">Заявка получена</option><option value="in_review">На проверке</option><option value="calculation">Расчёт</option><option value="awaiting_customer">Ожидаем клиента</option><option value="approved">Согласовано</option><option value="converted">Передано в ЦЕХ</option><option value="cancelled">Отменено</option></select></label>
+        </div>
+        <div class="layout">
+          <div class="application-list" id="application-list" aria-live="polite"></div>
+          <aside class="details" id="details"><div class="empty">Выберите заявку слева</div></aside>
+        </div>
+      </section>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>
