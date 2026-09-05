@@ -7,9 +7,16 @@ const loginError = document.querySelector('#login-error');
 const list = document.querySelector('#application-list');
 const details = document.querySelector('#details');
 const statusFilter = document.querySelector('#status-filter');
+const searchInput = document.querySelector('#application-search');
+const previousPage = document.querySelector('#previous-page');
+const nextPage = document.querySelector('#next-page');
+const pageLabel = document.querySelector('#page-label');
 const modeLabel = document.querySelector('#mode-label');
 let adminToken = sessionStorage.getItem('remuvki-admin-token') || '';
 let applications = [];
+let currentPage = 1;
+let totalPages = 1;
+const pageSize = 20;
 
 const statusLabels = { submitted:'Заявка получена', in_review:'На проверке', calculation:'Расчёт', awaiting_customer:'Ожидаем клиента', approved:'Согласовано', converted:'Передано в ЦЕХ', cancelled:'Отменено' };
 const technologyLabels = { sublimation:'Сублимация', dtf:'DTF', film:'Плёнка', embroidery:'Вышивка', help:'Помочь выбрать' };
@@ -40,8 +47,20 @@ function renderList() {
 }
 
 async function loadApplications() {
-  if (isPreview) applications = demoApplications.filter(item => !statusFilter.value || item.status === statusFilter.value);
-  else applications = (await api(`/api/admin/applications?status=${encodeURIComponent(statusFilter.value)}`)).applications;
+  const query = searchInput.value.trim().toLowerCase();
+  if (isPreview) {
+    const filtered = demoApplications.filter(item => (!statusFilter.value || item.status === statusFilter.value) && (!query || [item.public_number,item.customer_name,item.company_name,item.phone,item.email].some(value => String(value||'').toLowerCase().includes(query))));
+    totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+    applications = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  } else {
+    const result = await api(`/api/admin/applications?status=${encodeURIComponent(statusFilter.value)}&q=${encodeURIComponent(searchInput.value.trim())}&page=${currentPage}&limit=${pageSize}`);
+    applications = result.applications;
+    totalPages = Math.max(1, result.pagination.total_pages);
+  }
+  if (currentPage > totalPages) { currentPage = totalPages; return loadApplications(); }
+  pageLabel.textContent = `Страница ${currentPage} из ${totalPages}`;
+  previousPage.disabled = currentPage <= 1;
+  nextPage.disabled = currentPage >= totalPages;
   renderList();
 }
 
@@ -93,6 +112,10 @@ async function login() {
 
 loginButton.addEventListener('click', login);
 tokenInput.addEventListener('keydown', event => { if (event.key==='Enter') login(); });
-statusFilter.addEventListener('change', loadApplications);
+statusFilter.addEventListener('change', () => { currentPage=1; loadApplications(); });
+let searchTimer;
+searchInput.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer=setTimeout(() => { currentPage=1; loadApplications(); },250); });
+previousPage.addEventListener('click', () => { if (currentPage>1) { currentPage-=1; loadApplications(); } });
+nextPage.addEventListener('click', () => { if (currentPage<totalPages) { currentPage+=1; loadApplications(); } });
 if (isPreview) { tokenInput.closest('label').classList.add('is-hidden'); loginButton.textContent='Открыть демо-админку'; }
 else if (adminToken) { tokenInput.value=adminToken; login(); }

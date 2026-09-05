@@ -22,10 +22,10 @@
       <section class="workspace is-hidden" id="workspace">
         <div class="toolbar">
           <div><p>Входящие</p><h1>Заявки с сайта</h1></div>
-          <label>Статус<select id="status-filter"><option value="">Все статусы</option><option value="submitted">Заявка получена</option><option value="in_review">На проверке</option><option value="calculation">Расчёт</option><option value="awaiting_customer">Ожидаем клиента</option><option value="approved">Согласовано</option><option value="converted">Передано в ЦЕХ</option><option value="cancelled">Отменено</option></select></label>
+          <div class="toolbar-filters"><label>Поиск<input type="search" id="application-search" placeholder="Номер, клиент, телефон"></label><label>Статус<select id="status-filter"><option value="">Все статусы</option><option value="submitted">Заявка получена</option><option value="in_review">На проверке</option><option value="calculation">Расчёт</option><option value="awaiting_customer">Ожидаем клиента</option><option value="approved">Согласовано</option><option value="converted">Передано в ЦЕХ</option><option value="cancelled">Отменено</option></select></label></div>
         </div>
         <div class="layout">
-          <div class="application-list" id="application-list" aria-live="polite"></div>
+          <div class="list-column"><div class="application-list" id="application-list" aria-live="polite"></div><div class="pagination"><button id="previous-page">←</button><span id="page-label">Страница 1</span><button id="next-page">→</button></div></div>
           <aside class="details" id="details"><div class="empty">Выберите заявку слева</div></aside>
         </div>
       </section>
