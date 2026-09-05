@@ -46,6 +46,15 @@ h3 { margin:0; font-size:23px; letter-spacing:-.025em; }
 .technology-card p { min-height:90px; color:var(--muted); }
 .technology-card button { align-self:flex-start; padding:0 0 3px; border:0; border-bottom:1px solid; background:none; font-weight:800; cursor:pointer; }
 .technology-card:hover { position:relative; z-index:1; box-shadow:0 12px 28px rgba(23,24,22,.1); transform:translateY(-3px); }
+.technology-actions { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.technology-actions a { font-size:12px; font-weight:700; text-underline-offset:4px; }
+.selection-guide { border-top:1px solid var(--line); }
+.guide-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--ink); }
+.guide-grid article { min-height:250px; padding:24px; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink); }
+.guide-grid article:first-child { border-left:1px solid var(--ink); }
+.guide-grid span { font-family:"IBM Plex Mono",monospace; color:var(--muted); font-size:10px; }
+.guide-grid h3 { margin-top:70px; }
+.guide-grid p { color:var(--muted); }
 .production { display:grid; grid-template-columns:.8fr 1.2fr; gap:8vw; color:var(--paper); background:var(--ink); }
 .production .eyebrow { color:#a9aaa3; }
 .process { padding:0; margin:0; list-style:none; }
@@ -131,10 +140,20 @@ label>small,.file-field span { display:block; margin-top:6px; color:var(--muted)
 footer { display:flex; align-items:center; justify-content:space-between; gap:24px; max-width:1440px; margin:auto; padding:36px 4vw; border-top:1px solid var(--line); }
 footer p { color:var(--muted); font-size:13px; }
 footer>a { font-weight:800; }
+.technology-page { min-height:80vh; }
+.technology-hero { display:grid; grid-template-columns:1fr .8fr; align-items:center; gap:7vw; }
+.technology-hero h1 { max-width:760px; }
+.technology-page-photo { display:grid; min-height:520px; place-items:center; padding:30px; border-radius:var(--radius); color:var(--muted); background:linear-gradient(135deg,#ded9ce,#c7c3b9); font-family:"IBM Plex Mono",monospace; font-size:10px; text-align:center; text-transform:uppercase; }
+.technology-info { display:grid; grid-template-columns:1fr 1fr; gap:1px; padding-top:0; }
+.technology-info article { padding:38px; border:1px solid var(--ink); }
+.technology-info article+article { border-left:0; }
+.technology-info span { color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase; }
+.technology-info h2 { margin-top:44px; font-size:clamp(32px,4vw,52px); }
+.technology-info p { max-width:600px; color:var(--muted); font-size:17px; }
 @media (max-width:900px) {
   nav>a:not(.button) { display:none; }
   .section { padding:72px 20px; }
-  .hero,.calculator-section,.production,.artwork,.faq { grid-template-columns:1fr; }
+  .hero,.calculator-section,.production,.artwork,.faq,.technology-hero { grid-template-columns:1fr; }
   .hero { padding-top:38px; }
   .hero-visual { min-height:400px; }
   .technology-grid { grid-template-columns:1fr 1fr; }
@@ -153,6 +172,9 @@ footer>a { font-weight:800; }
   .hero-visual { min-height:310px; }
   .section-heading { grid-template-columns:1fr; }
   .technology-grid { grid-template-columns:1fr; }
+  .guide-grid { grid-template-columns:1fr; }
+  .guide-grid article { min-height:auto; border-left:1px solid var(--ink); }
+  .guide-grid h3 { margin-top:34px; }
   .case-grid,.artwork-content { grid-template-columns:1fr; }
   .case-large { grid-column:auto; }
   .photo-placeholder { min-height:280px; }
@@ -165,5 +187,8 @@ footer>a { font-weight:800; }
   .choice-grid label>span { min-height:74px; }
   .form-actions { position:sticky; bottom:0; margin:0 -16px -22px; padding:14px 16px; background:white; }
   footer { align-items:flex-start; flex-direction:column; }
+  .technology-info { grid-template-columns:1fr; }
+  .technology-info article+article { border-top:0; border-left:1px solid var(--ink); }
+  .technology-page-photo { min-height:340px; }
 }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*:before,*:after { transition-duration:.01ms!important; animation-duration:.01ms!important; animation-iteration-count:1!important; } }
